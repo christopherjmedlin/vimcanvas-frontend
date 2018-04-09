@@ -1,0 +1,59 @@
+body {
+    background-color: black;
+    text-align: center;
+    color: #00FF00;
+}
+
+#logo {
+    margin-top: 20px;
+}
+
+#mainDiv {
+    border: 2px solid #00FF00;
+    margin: 50px;
+    height: 200px;
+    overflow-y: auto;
+}
+
+#canvas {
+    height: 96%;
+    width: 96%;
+}
+
+.fakeTerm {
+    text-align: left;
+    font-family: monospace;
+    margin: 6px;
+}
+
+.fakeTerm output {
+    font-size: 13px;
+}
+
+.prompt {
+    font-size: 13px;
+}
+
+.fakeTerm input {
+    font-family: monospace;
+    background-color: black;
+    border: none;
+    color: #00FF00;
+    outline: none;
+    font-size: 13px;
+    width: 96%;
+}
+
+.prompt {
+    display: inline;
+    margin-right: 4px;
+}
+
+::-webkit-scrollbar {
+    background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00FF00;
+    border-radius: 0;
+}
