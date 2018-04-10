@@ -56,10 +56,12 @@ export default class FakeTerminal {
             this.output("'" + input[0] + "' is not a command. Type 'help' for more information.");
 
         this.elements["inputLine"].value = "";
+        this.container.scrollTop = this.container.scrollHeight;
     }
 
     output(message) {
         this.elements["output"].insertAdjacentHTML("beforeend", message + "<br>")
+        this.container.scrollTop = this.container.scrollHeight;
     }
 
     handleKeypress_(event) {
