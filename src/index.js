@@ -28,6 +28,7 @@ function main() {
         document.getElementById("mainDiv").style.height = window.innerHeight - 190 + "px";
     };
 
+    /*
     $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
         let message = null;
         if (jqxhr.status) {
@@ -36,8 +37,8 @@ function main() {
         else {
             message = "Page not found.";
         }
-        alert("AJAX Error: " + message);
-    });
+        alert("AJAX error occured.");
+    }); */
 }
 
 document.addEventListener("DOMContentLoaded", () => {
