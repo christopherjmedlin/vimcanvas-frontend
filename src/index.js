@@ -24,9 +24,9 @@ function main() {
     }
     term.init();
 
-    window.onresize = () => {
+    $(window).resize(() => {
         document.getElementById("mainDiv").style.height = window.innerHeight - 190 + "px";
-    };
+    });
 
     /*
     $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
