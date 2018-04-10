@@ -13,6 +13,7 @@ body {
     margin: 50px;
     height: 200px;
     overflow-y: auto;
+    text-align: left;
 }
 
 #canvas {
@@ -34,7 +35,7 @@ body {
     font-size: 13px;
 }
 
-.fakeTerm input {
+input {
     font-family: monospace;
     background-color: black;
     border: none;
@@ -42,6 +43,10 @@ body {
     outline: none;
     font-size: 13px;
     width: 96%;
+}
+
+.vimCanvas input {
+    border-top-color: #00FF00;
 }
 
 .prompt {

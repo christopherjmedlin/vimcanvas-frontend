@@ -1,4 +1,5 @@
 import FakeTerminal from './terminal.js';
+import VimCanvas from './canvas.js';
 import $ from 'jquery';
 
 function getCanvases_(success) {
@@ -59,10 +60,14 @@ export function vim(terminal, args) {
             if (canvases[canvas].name == args[0]) {
                 getCanvas_(canvas => {
                     terminal.tearDown();
+                    let vimCanvas = new VimCanvas(canvas, "mainDiv");
+                    vimCanvas.init();
                 }, canvases[canvas]._id);
             }
         }
     });
+    if (!args.length)
+        terminal.output("No name specified.");
 }
 
 var commands = {
