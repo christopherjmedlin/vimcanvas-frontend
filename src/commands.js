@@ -24,7 +24,7 @@ export function echo(terminal, args) {
 }
 
 export function ls(terminal, args) {
-    getCanvases_(function(canvases) {
+    getCanvases_(canvases => {
         if (canvases.length) {
             for (var canvas in canvases) {
                 terminal.output(canvases[canvas].name);
@@ -45,7 +45,7 @@ export function touch(terminal, args) {
             data: JSON.stringify({
                 "title": args[0]
             }),
-            success: function(data) {
+            success: data => {
                 console.log(data);
             }
         });
@@ -54,11 +54,11 @@ export function touch(terminal, args) {
 }
 
 export function vim(terminal, args) {
-    getCanvases_(function(canvases) {
+    getCanvases_(canvases => {
         for (var canvas in canvases) {
             if (canvases[canvas].name == args[0]) {
-                getCanvas_(function(canvas) {
-                    console.log(canvas);
+                getCanvas_(canvas => {
+                    terminal.tearDown();
                 }, canvases[canvas]._id);
             }
         }
