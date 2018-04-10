@@ -42,7 +42,7 @@ export default class FakeTerminal {
     }
 
     addCommand(name, action) {
-        this.commands["name"] = action;
+        this.commands[name] = action;
     }
 
     runCommand() {

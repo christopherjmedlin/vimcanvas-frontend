@@ -2,6 +2,7 @@ import './style/style.css';
 import Logo from './img/logo.svg';
 import $ from 'jquery';
 import FakeTerminal from './terminal.js';
+import commands from './commands.js';
 
 function logo() {
     var logo = new Image();
@@ -18,11 +19,25 @@ function main() {
     $(logo()).insertBefore(mainDiv);
     
     let term = new FakeTerminal("mainDiv", '$>');
+    for (var key in commands) {
+        term.addCommand(key, commands[key]);
+    }
     term.init();
 
     window.onresize = () => {
         document.getElementById("mainDiv").style.height = window.innerHeight - 190 + "px";
     };
+
+    $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+        let message = null;
+        if (jqxhr.status) {
+            message = jqxhr.responseText;
+        }
+        else {
+            message = "Page not found.";
+        }
+        alert("AJAX Error: " + message);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
