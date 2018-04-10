@@ -1,30 +1,42 @@
 import FakeTerminal from './terminal.js';
 import $ from 'jquery';
 
+function getCanvases_(success) {
+    $.ajax({
+        url: "https://api.vimcanvas.christophermedlin.me/v1/canvases",
+        dataType: 'JSON',
+        success: success
+    });
+}
+
+function getCanvas_(success, id) {
+    let url = "https://api.vimcanvas.christophermedlin.me/v1/canvases/" + id;
+    $.ajax({
+        url: url,
+        dataType: 'JSON',
+        success: success
+    })
+}
+
 export function echo(terminal, args) {
     if (args[0] != undefined)
         terminal.output(args[0]);
 }
 
 export function ls(terminal, args) {
-    $.ajax({
-        url: "https://api.vimcanvas.christophermedlin.me/v1/canvases",
-        dataType: 'JSON',
-        success: function(canvases) {
-            if (canvases.length) {
-                for (var canvas in canvases) {
-                    terminal.output(canvases[canvas].name);
-                }
-            }
-            else {
-                terminal.output("There are currently no active canvases. Create one with 'touch'");
+    getCanvases_(function(canvases) {
+        if (canvases.length) {
+            for (var canvas in canvases) {
+                terminal.output(canvases[canvas].name);
             }
         }
-    });
+        else {
+            terminal.output("There are currently no active canvases. Create one with 'touch'");
+        }
+    })
 }
 
 export function touch(terminal, args) {
-
     if (args.length)
         $.ajax({
             url: "https://api.vimcanvas.christophermedlin.me/v1/canvases",
@@ -41,10 +53,23 @@ export function touch(terminal, args) {
         terminal.output("No name specified.");
 }
 
+export function vim(terminal, args) {
+    getCanvases_(function(canvases) {
+        for (var canvas in canvases) {
+            if (canvases[canvas].name == args[0]) {
+                getCanvas_(function(canvas) {
+                    console.log(canvas);
+                }, canvases[canvas]._id);
+            }
+        }
+    });
+}
+
 var commands = {
     "echo": echo,
     "ls": ls,
-    "touch": touch
+    "touch": touch,
+    "vim": vim
 }
 
 export default commands;
