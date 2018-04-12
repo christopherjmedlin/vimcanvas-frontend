@@ -11,11 +11,13 @@ class CanvasCommandInput {
     init() {
         this.input = document.createElement('input');
         this.input.className = "commandInput";
+        this.input.disabled = true;
         this.container.appendChild(this.input);
         $(this.input).keydown($.proxy(this.keyPress_, this));
     }
 
     focus() {
+        this.input.disabled = false;
         this.input.focus();
     }
 
@@ -28,6 +30,7 @@ class CanvasCommandInput {
             case 8:
                 if (this.input.value == ":") {
                     this.input.value = "";
+                    this.input.disabled = true;
                     this.canvas.focus();
                 }
         }
