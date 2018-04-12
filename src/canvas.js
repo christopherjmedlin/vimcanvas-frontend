@@ -11,7 +11,8 @@ class CanvasCommandInput {
     init() {
         this.input = document.createElement('input');
         this.input.className = "commandInput";
-        this.canvas.container.appendChild(this.input);
+        this.container.appendChild(this.input);
+        $(this.input).keydown($.proxy(this.keyPress_, this));
     }
 
     focus() {
@@ -20,6 +21,16 @@ class CanvasCommandInput {
 
     tearDown() {
         this.container.removeChild(this.input);
+    }
+
+    keyPress_(event) {
+        switch (event.which) {
+            case 8:
+                if (this.input.value == ":") {
+                    this.input.value = "";
+                    this.canvas.focus();
+                }
+        }
     }
 }
 
@@ -38,15 +49,16 @@ export default class VimCanvas {
         this.container.appendChild(wrapperDiv);
         this.elements['wrapperDiv'] = wrapperDiv;
 
-        this.canvas = document.createElement('canvas');
-        this.canvas.tabIndex = 1;
-        wrapperDiv.appendChild(this.canvas);
+        let canvas = document.createElement('canvas');
+        canvas.tabIndex = 1;
+        wrapperDiv.appendChild(canvas);
+        this.elements["canvas"] = canvas;
 
         this.commandInput = new CanvasCommandInput(this, "mainDiv");
         this.commandInput.init();
 
-        this.canvas.focus();
-        $(this.canvas).keydown($.proxy(this.keyPress_, this));
+        canvas.focus();
+        $(canvas).keydown($.proxy(this.keyPress_, this));
 
         // horizontal scrollbar appears if i resize once so i do it twice.
         // ¯\_(ツ)_/¯
@@ -63,10 +75,14 @@ export default class VimCanvas {
         this.commandInput.tearDown();
     }
 
+    focus() {
+        this.elements["canvas"].focus();
+    }
+
     resize_() {
-        this.canvas.width = $(this.container).width();
+        this.elements["canvas"].width = $(this.container).width();
         // subtract 25 to make up for the input
-        this.canvas.height = $(this.container).height() - 25;
+        this.elements["canvas"].height = $(this.container).height() - 25;
     }
 
     keyPress_(event) {
