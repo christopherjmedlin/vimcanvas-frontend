@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-let WEBSOCKET_URL = "wss://api.vimcanvas.christophermedlin.me/v1/socket"
+let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket"
 
 class CanvasCommandInput {
     constructor(canvas, containerID) {
@@ -17,6 +17,7 @@ class CanvasCommandInput {
     }
 
     focus() {
+        this.input.value = ":";
         this.input.disabled = false;
         this.input.focus();
     }
@@ -43,6 +44,14 @@ export default class VimCanvas {
         this.canvasObject = canvasObject;
         this.container = document.getElementById(containerID);
         this.elements = {};
+        
+        this.characterArray = [];
+        for (let i = 0; i < 500; i++) {
+            this.characterArray[i] = []
+            for (let j = 0; j < 500; j++) {
+                this.characterArray[i][j] = '#';
+            }
+        }
         $(window).resize($.proxy(this.resize_, this));
     }
     
@@ -70,7 +79,7 @@ export default class VimCanvas {
     }
 
     initWebsocket() {
-        this.socket = new WebSocket(WEBSOCKET_URL);
+        this.socket = new WebSocket(WEBSOCKET_URL + "/" + this.canvasObject["_id"]);
     }
 
     tearDown() {
@@ -90,6 +99,7 @@ export default class VimCanvas {
 
     keyPress_(event) {
         if (event.which == 186 && event.shiftKey) {
+            event.preventDefault();
             this.commandInput.focus();
         }
     }
