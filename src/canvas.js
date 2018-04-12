@@ -5,18 +5,21 @@ let WEBSOCKET_URL = "wss://api.vimcanvas.christophermedlin.me/v1/socket"
 class CanvasCommandInput {
     constructor(canvas, containerID) {
         this.canvas = canvas;
-        this.container = document.getElementById(continerID);
-        $(window).resize($.proxy(this.resize_));
+        this.container = document.getElementById(containerID);
     }
 
     init() {
         this.input = document.createElement('input');
         this.input.className = "commandInput";
-        this.container.appendChild(this.input);
+        this.canvas.container.appendChild(this.input);
     }
 
-    resize_() {
-        $(this.input).width($(this.container).width());
+    focus() {
+        this.input.focus();
+    }
+
+    tearDown() {
+        this.container.removeChild(this.input);
     }
 }
 
@@ -37,12 +40,10 @@ export default class VimCanvas {
 
         this.canvas = document.createElement('canvas');
         this.canvas.tabIndex = 1;
-        this.container.appendChild(this.canvas);
+        wrapperDiv.appendChild(this.canvas);
 
-        let commandInput = document.createElement('input');
-        commandInput.className = "commandInput";
-        this.container.appendChild(commandInput);
-        this.elements['commandInput'] = commandInput;
+        this.commandInput = new CanvasCommandInput(this, "mainDiv");
+        this.commandInput.init();
 
         this.canvas.focus();
         $(this.canvas).keydown($.proxy(this.keyPress_, this));
@@ -59,18 +60,18 @@ export default class VimCanvas {
 
     tearDown() {
         this.container.removeChild(this.elements['wrapperDiv']);
+        this.commandInput.tearDown();
     }
 
     resize_() {
         this.canvas.width = $(this.container).width();
-        // subtract 6 to make up for borders, maybe make this more dynamic later
-        this.canvas.height = $(this.container).height() - $(this.elements['commandInput']).height() - 8;
-        $(this.elements['commandInput']).width($(this.container).width());
+        // subtract 25 to make up for the input
+        this.canvas.height = $(this.container).height() - 25;
     }
 
     keyPress_(event) {
         if (event.which == 186 && event.shiftKey) {
-            this.elements['commandInput'].focus();
+            this.commandInput.focus();
         }
     }
 

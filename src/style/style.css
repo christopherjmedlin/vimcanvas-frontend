@@ -31,10 +31,6 @@ body {
     font-size: 13px;
 }
 
-.prompt {
-    font-size: 13px;
-}
-
 input {
     font-family: monospace;
     background-color: black;
@@ -42,10 +38,15 @@ input {
     color: #00FF00;
     outline: none;
     font-size: 13px;
+    width: 100%;
+}
+
+.fakeTerm input {
     width: 96%;
 }
 
 .prompt {
+    font-size: 13px;
     display: inline;
     margin-right: 4px;
 }
