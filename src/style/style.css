@@ -45,13 +45,17 @@ input {
     width: 96%;
 }
 
-.vimCanvas input {
-    border-top-color: #00FF00;
-}
-
 .prompt {
     display: inline;
     margin-right: 4px;
+}
+
+.commandInput {
+    border-top: 2px solid #00FF00;
+}
+
+canvas:focus {
+    outline: none;
 }
 
 ::-webkit-scrollbar {
