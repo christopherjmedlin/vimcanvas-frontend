@@ -18,10 +18,7 @@ function main() {
     mainDiv.style.height = window.innerHeight - 190 + "px";
     $(logo()).insertBefore(mainDiv);
     
-    let term = new FakeTerminal("mainDiv", '$>');
-    for (var key in commands) {
-        term.addCommand(key, commands[key]);
-    }
+    let term = new FakeTerminal("mainDiv", '$>', commands);
     term.init();
 
     $(window).resize(() => {
