@@ -1,5 +1,8 @@
 import VimCanvas from './canvas.js';
+import canvasCommands from './canvas-commands.js';
 import $ from 'jquery';
+
+console.log(canvasCommands);
 
 function getCanvases_(success) {
     $.ajax({
@@ -59,7 +62,7 @@ export function vim(terminal, args) {
             if (canvases[canvas].name == args[0]) {
                 getCanvas_(canvas => {
                     terminal.hide();
-                    let vimCanvas = new VimCanvas(canvas, "mainDiv");
+                    let vimCanvas = new VimCanvas(canvas, "mainDiv", terminal, canvasCommands);
                     vimCanvas.init();
                 }, canvases[canvas]._id);
             }

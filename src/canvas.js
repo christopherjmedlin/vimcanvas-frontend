@@ -4,10 +4,11 @@ import CommandRunner from './runner';
 let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket"
 
 class CanvasCommandInput extends CommandRunner {
-    constructor(canvas, containerID, terminal, commands={}) {
+    constructor(canvas, containerID, terminal, commands) {
         super(commands);
+        console.log(commands);
         this.canvas = canvas;
-        this.terminal = 
+        this.terminal = terminal;
         this.container = document.getElementById(containerID);
     }
 
@@ -30,7 +31,7 @@ class CanvasCommandInput extends CommandRunner {
     }
 
     runCommand() {
-        super.runCommand(this.input.value);
+        super.runCommand(this.input.value.slice(1));
         this.input.disabled = true;
         this.canvas.focus();
     }
@@ -55,11 +56,12 @@ class CanvasCommandInput extends CommandRunner {
 
 export default class VimCanvas {
 
-    constructor(canvasObject, containerID, terminal) {
+    constructor(canvasObject, containerID, terminal, commands={}) {
         this.canvasObject = canvasObject;
         this.container = document.getElementById(containerID);
         this.elements = {};
         this.terminal = terminal;
+        this.commands = commands;
         
         this.characterArray = [];
         for (let i = 0; i < 500; i++) {
@@ -82,7 +84,7 @@ export default class VimCanvas {
         wrapperDiv.appendChild(canvas);
         this.elements["canvas"] = canvas;
 
-        this.commandInput = new CanvasCommandInput(this, "mainDiv", this.terminal);
+        this.commandInput = new CanvasCommandInput(this, "mainDiv", this.terminal, this.commands);
         this.commandInput.init();
 
         canvas.focus();
