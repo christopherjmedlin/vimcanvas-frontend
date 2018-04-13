@@ -6,7 +6,6 @@ let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket"
 class CanvasCommandInput extends CommandRunner {
     constructor(canvas, containerID, terminal, commands) {
         super(commands);
-        console.log(commands);
         this.canvas = canvas;
         this.terminal = terminal;
         this.container = document.getElementById(containerID);
