@@ -58,7 +58,7 @@ export function vim(terminal, args) {
         for (var canvas in canvases) {
             if (canvases[canvas].name == args[0]) {
                 getCanvas_(canvas => {
-                    terminal.tearDown();
+                    terminal.hide();
                     let vimCanvas = new VimCanvas(canvas, "mainDiv");
                     vimCanvas.init();
                 }, canvases[canvas]._id);

@@ -1,10 +1,12 @@
 import $ from 'jquery';
+import CommandRunner from './runner';
 
 let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket"
 
 class CanvasCommandInput {
-    constructor(canvas, containerID) {
+    constructor(canvas, containerID, terminal) {
         this.canvas = canvas;
+        this.terminal = 
         this.container = document.getElementById(containerID);
     }
 
@@ -40,10 +42,11 @@ class CanvasCommandInput {
 
 export default class VimCanvas {
 
-    constructor(canvasObject, containerID) {
+    constructor(canvasObject, containerID, terminal) {
         this.canvasObject = canvasObject;
         this.container = document.getElementById(containerID);
         this.elements = {};
+        this.terminal = terminal;
         
         this.characterArray = [];
         for (let i = 0; i < 500; i++) {
@@ -66,7 +69,7 @@ export default class VimCanvas {
         wrapperDiv.appendChild(canvas);
         this.elements["canvas"] = canvas;
 
-        this.commandInput = new CanvasCommandInput(this, "mainDiv");
+        this.commandInput = new CanvasCommandInput(this, "mainDiv", this.terminal);
         this.commandInput.init();
 
         canvas.focus();

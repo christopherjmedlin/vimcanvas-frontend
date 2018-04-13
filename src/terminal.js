@@ -1,4 +1,4 @@
-import {CommandRunner} from "./commands";
+import CommandRunner from "./runner";
 
 // not copied, but took cues from this codepen - https://codepen.io/AndrewBarfield/pen/qEqWMq
 export default class FakeTerminal extends CommandRunner {
@@ -39,8 +39,12 @@ export default class FakeTerminal extends CommandRunner {
         inputLine.focus();
     }
 
-    tearDown() {
-        this.container.removeChild(this.elements['wrapperDiv']);
+    hide() {
+        this.elements['wrapperDiv'].style.display = "none";
+    }
+
+    show() {
+        this.elements['wrapperDiv'].style.display = "block";
     }
 
     addCommand(name, action) {
