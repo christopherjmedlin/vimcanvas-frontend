@@ -1,11 +1,13 @@
+import {CommandRunner} from "./commands";
+
 // not copied, but took cues from this codepen - https://codepen.io/AndrewBarfield/pen/qEqWMq
-export default class FakeTerminal {
+export default class FakeTerminal extends CommandRunner {
 
     constructor(containerID, prompt, commands={}) {
+        super(commands);
         this.container = document.getElementById(containerID);
         this.promptString = prompt;
         this.elements = {};
-        this.commands = commands;
     }
 
     init() {
@@ -47,13 +49,10 @@ export default class FakeTerminal {
 
     runCommand() {
         let line = this.elements["inputLineDiv"].cloneNode(true);
+        line.getElementsByTagName("input").disabled = true;
         this.elements["output"].append(line);
 
-        let input = this.elements['inputLine'].value.split(" ");
-        if (input[0] in this.commands)
-            this.commands[input[0]](this, input.slice(1));
-        else
-            this.output("'" + input[0] + "' is not a command. Type 'help' for more information.");
+        super.runCommand(this.elements['inputLine'].value);
 
         this.elements["inputLine"].value = "";
         this.container.scrollTop = this.container.scrollHeight;
