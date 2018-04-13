@@ -46,6 +46,10 @@ export default class FakeTerminal extends CommandRunner {
     show() {
         this.elements['wrapperDiv'].style.display = "block";
     }
+    
+    focus() {
+        this.elements['inputLine'].focus();
+    }
 
     addCommand(name, action) {
         this.commands[name] = action;
