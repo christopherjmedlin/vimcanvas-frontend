@@ -3,8 +3,9 @@ import CommandRunner from './runner';
 
 let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket"
 
-class CanvasCommandInput {
-    constructor(canvas, containerID, terminal) {
+class CanvasCommandInput extends CommandRunner {
+    constructor(canvas, containerID, terminal, commands={}) {
+        super(commands);
         this.canvas = canvas;
         this.terminal = 
         this.container = document.getElementById(containerID);
@@ -28,6 +29,16 @@ class CanvasCommandInput {
         this.container.removeChild(this.input);
     }
 
+    runCommand() {
+        super.runCommand(this.input.value);
+        this.input.disabled = true;
+        this.canvas.focus();
+    }
+
+    output(text) {
+        this.input.value = text;
+    }
+
     keyPress_(event) {
         switch (event.which) {
             case 8:
@@ -36,6 +47,8 @@ class CanvasCommandInput {
                     this.input.disabled = true;
                     this.canvas.focus();
                 }
+            case 13:
+                this.runCommand();
         }
     }
 }
