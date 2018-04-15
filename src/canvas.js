@@ -47,8 +47,10 @@ class CanvasCommandInput extends CommandRunner {
                     this.input.disabled = true;
                     this.canvas.focus();
                 }
+                break;
             case 13:
                 this.runCommand();
+                break;
         }
     }
 }
@@ -145,12 +147,6 @@ export default class VimCanvas {
     }
 
     keyPress_(event) {
-        /*
-        if (event.which == 186 && event.shiftKey) {
-            event.preventDefault();
-            this.commandInput.focus();
-        }
-        */
         switch (event.which) {
             case 186:
                 if (event.shiftKey) {
