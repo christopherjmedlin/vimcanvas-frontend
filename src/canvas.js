@@ -64,6 +64,8 @@ export default class VimCanvas {
 
         this.translateX = 0;
         this.translateY = 0;
+        this.playerPosX = Math.floor(Math.random() * 501);
+        this.playerPosY = Math.floor(Math.random() * 501);
         this.scale = 1;
         
         this.characterArray = [];
@@ -73,6 +75,7 @@ export default class VimCanvas {
                 this.characterArray[i][j] = '##00FF00';
             }
         }
+        
         $(window).resize($.proxy(this.resize_, this));
     }
     
@@ -119,7 +122,7 @@ export default class VimCanvas {
         ctx.fillStyle = "#00FF00";
 
         ctx.scale(this.scale, this.scale);
-        ctx.translate(this.translateX, this.translateY);
+        ctx.translate(this.translateX * 15, this.translateY * 15);
         
         for (var line in this.characterArray) {
             for (var character in this.characterArray[line]) {
@@ -142,9 +145,18 @@ export default class VimCanvas {
     }
 
     keyPress_(event) {
+        /*
         if (event.which == 186 && event.shiftKey) {
             event.preventDefault();
             this.commandInput.focus();
+        }
+        */
+        switch (event.which) {
+            case 186:
+                if (event.shiftKey) {
+                    event.preventDefault();
+                    this.commandInput.focus();
+                }
         }
     }
 
