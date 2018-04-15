@@ -117,7 +117,7 @@ export default class VimCanvas {
         let ctx = this.canvas.getContext("2d");
         ctx.font = "15px monospace";
         ctx.fillStyle = "#00FF00";
-        
+
         ctx.scale(this.scale, this.scale);
         ctx.translate(this.translateX, this.translateY);
         
