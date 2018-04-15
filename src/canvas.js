@@ -61,6 +61,10 @@ export default class VimCanvas {
         this.elements = {};
         this.terminal = terminal;
         this.commands = commands;
+
+        this.translateX = 0;
+        this.translateY = 0;
+        this.scale = 1;
         
         this.characterArray = [];
         for (let i = 0; i < 500; i++) {
@@ -113,6 +117,9 @@ export default class VimCanvas {
         let ctx = this.canvas.getContext("2d");
         ctx.font = "15px monospace";
         ctx.fillStyle = "#00FF00";
+        
+        ctx.scale(this.scale, this.scale);
+        ctx.translate(this.translateX, this.translateY);
         
         for (var line in this.characterArray) {
             for (var character in this.characterArray[line]) {
