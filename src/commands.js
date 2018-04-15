@@ -2,8 +2,6 @@ import VimCanvas from './canvas.js';
 import canvasCommands from './canvas-commands.js';
 import $ from 'jquery';
 
-console.log(canvasCommands);
-
 function getCanvases_(success) {
     $.ajax({
         url: "https://api.vimcanvas.christophermedlin.me/v1/canvases",
