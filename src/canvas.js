@@ -64,10 +64,10 @@ export default class VimCanvas {
         this.terminal = terminal;
         this.commands = commands;
 
-        this.translateX = 0;
-        this.translateY = 0;
-        this.playerPosX = Math.floor(Math.random() * 501);
-        this.playerPosY = Math.floor(Math.random() * 501);
+        this.playerPos = [Math.floor(Math.random() * 501),
+                          Math.floor(Math.random() * 501)];
+        this.translateX = -this.playerPos[0] + 5;
+        this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
         
         this.characterArray = [];
@@ -79,6 +79,7 @@ export default class VimCanvas {
         }
         
         $(window).resize($.proxy(this.resize_, this));
+        $(window).resize($.proxy(this.draw, this));
     }
     
     init() {     
