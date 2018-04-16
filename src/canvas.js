@@ -47,8 +47,10 @@ class CanvasCommandInput extends CommandRunner {
                     this.input.disabled = true;
                     this.canvas.focus();
                 }
+                break;
             case 13:
                 this.runCommand();
+                break;
         }
     }
 }
@@ -61,15 +63,23 @@ export default class VimCanvas {
         this.elements = {};
         this.terminal = terminal;
         this.commands = commands;
+
+        this.playerPos = [Math.floor(Math.random() * 501),
+                          Math.floor(Math.random() * 501)];
+        this.translateX = -this.playerPos[0] + 5;
+        this.translateY = -this.playerPos[1] + 5;
+        this.scale = 1;
         
         this.characterArray = [];
         for (let i = 0; i < 500; i++) {
             this.characterArray[i] = []
             for (let j = 0; j < 500; j++) {
-                this.characterArray[i][j] = '#';
+                this.characterArray[i][j] = '##00FF00';
             }
         }
+        
         $(window).resize($.proxy(this.resize_, this));
+        $(window).resize($.proxy(this.draw, this));
     }
     
     init() {     
@@ -78,21 +88,22 @@ export default class VimCanvas {
         this.container.appendChild(wrapperDiv);
         this.elements['wrapperDiv'] = wrapperDiv;
 
-        let canvas = document.createElement('canvas');
-        canvas.tabIndex = 1;
-        wrapperDiv.appendChild(canvas);
-        this.elements["canvas"] = canvas;
+        this.canvas = document.createElement('canvas');
+        this.canvas.tabIndex = 1;
+        wrapperDiv.appendChild(this.canvas);
 
         this.commandInput = new CanvasCommandInput(this, "mainDiv", this.terminal, this.commands);
         this.commandInput.init();
 
-        canvas.focus();
-        $(canvas).keydown($.proxy(this.keyPress_, this));
+        this.canvas.focus();
+        $(this.canvas).keydown($.proxy(this.keyPress_, this));
 
         // horizontal scrollbar appears if i resize once so i do it twice.
         // ¯\_(ツ)_/¯
         this.resize_();
         this.resize_();
+
+        this.draw();
     }
 
     initWebsocket() {
@@ -105,19 +116,44 @@ export default class VimCanvas {
     }
 
     focus() {
-        this.elements["canvas"].focus();
+        this.canvas.focus();
+    }
+
+    draw() {
+        let ctx = this.canvas.getContext("2d");
+        ctx.font = "15px monospace";
+        ctx.fillStyle = "#00FF00";
+
+        ctx.scale(this.scale, this.scale);
+        ctx.translate(this.translateX * 15, this.translateY * 15);
+        
+        for (var line in this.characterArray) {
+            for (var character in this.characterArray[line]) {
+                ctx.fillStyle = this.characterArray[line][character].slice(1);
+                ctx.fillText(
+                    this.characterArray[line][character][0],
+                    character * 15,
+                    (line * 15) + 15
+                );
+            }
+        }
+        
+        //ctx.fillText("#", 1, 15);
     }
 
     resize_() {
-        this.elements["canvas"].width = $(this.container).width();
+        this.canvas.width = $(this.container).width();
         // subtract 25 to make up for the input
-        this.elements["canvas"].height = $(this.container).height() - 25;
+        this.canvas.height = $(this.container).height() - 25;
     }
 
     keyPress_(event) {
-        if (event.which == 186 && event.shiftKey) {
-            event.preventDefault();
-            this.commandInput.focus();
+        switch (event.which) {
+            case 186:
+                if (event.shiftKey) {
+                    event.preventDefault();
+                    this.commandInput.focus();
+                }
         }
     }
 
