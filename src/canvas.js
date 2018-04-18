@@ -66,6 +66,7 @@ export default class VimCanvas {
 
         this.playerPos = [Math.floor(Math.random() * 501),
                           Math.floor(Math.random() * 501)];
+        this.playerPositions = {};
         this.translateX = -this.playerPos[0] + 5;
         this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
@@ -129,16 +130,18 @@ export default class VimCanvas {
         
         for (var line in this.characterArray) {
             for (var character in this.characterArray[line]) {
-                ctx.fillStyle = this.characterArray[line][character].slice(1);
-                ctx.fillText(
-                    this.characterArray[line][character][0],
-                    character * 15,
-                    (line * 15) + 15
-                );
+                this.drawChar_(ctx, line, character);
             }
         }
-        
-        //ctx.fillText("#", 1, 15);
+    }
+
+    drawChar_(ctx, line, character) {
+        ctx.fillStyle = this.characterArray[line][character].slice(1);
+        ctx.fillText(
+            this.characterArray[line][character][0],
+            character * 15,
+            (line * 15) + 15
+        );
     }
 
     resize_() {
