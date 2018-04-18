@@ -127,7 +127,6 @@ export default class VimCanvas {
 
         ctx.scale(this.scale, this.scale);
         ctx.translate(this.translateX * 15, this.translateY * 15);
-        
         for (var line in this.characterArray) {
             for (var character in this.characterArray[line]) {
                 this.drawChar_(ctx, line, character);
@@ -136,6 +135,26 @@ export default class VimCanvas {
     }
 
     drawChar_(ctx, line, character) {
+        let invertColors = false;
+        if (this.playerPos[0] == character && this.playerPos[1] == line) {
+            invertColors = true;
+        }
+        for (coord in this.playerPositions) {
+            if (this.playerPos[0] == this.playerPositions[coord][0] &&
+                this.playerPos[1] == this.playerPositions[coord][1]) {
+                    invertColors = true;
+            }
+        }
+
+        if (invertColors) {
+            ctx.strokeStyle = "#FF0000";
+            // draw a rectangle to highlight cursor
+            let x = character * 15 - 2;
+            let y = line * 15 + 2;
+            ctx.rect(x, y, 13, 15);
+            ctx.stroke();
+        }
+
         ctx.fillStyle = this.characterArray[line][character].slice(1);
         ctx.fillText(
             this.characterArray[line][character][0],
@@ -152,12 +171,13 @@ export default class VimCanvas {
 
     keyPress_(event) {
         switch (event.which) {
-            case 186:
+            case 186: // :
                 if (event.shiftKey) {
                     event.preventDefault();
                     this.commandInput.focus();
                 }
         }
+        this.draw();
     }
 
     onWebsocketMessage_(event) {
