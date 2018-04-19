@@ -184,15 +184,21 @@ export default class VimCanvas {
                     event.preventDefault();
                     this.commandInput.focus();
                 }
+                break;
             case 72: // h
                 this.playerPos[0] -= 1;
+                break;
             case 74: // j
-                this.playerPos[1] -= 1;
-            case 75: // k
                 this.playerPos[1] += 1;
+                break;
+            case 75: // k
+                this.playerPos[1] -= 1;
+                break;
             case 76: // l
                 this.playerPos[0] += 1;
+                break;
         }
+        console.log(this.playerPos);
         this.draw();
     }
 
