@@ -97,7 +97,7 @@ export default class VimCanvas {
         this.commandInput.init();
 
         this.canvas.focus();
-        $(this.canvas).keydown($.proxy(this.keyPress_, this));
+        $(this.canvas).keyup($.proxy(this.keyPress_, this));
 
         // horizontal scrollbar appears if i resize once so i do it twice.
         // ¯\_(ツ)_/¯
@@ -122,35 +122,43 @@ export default class VimCanvas {
 
     draw() {
         let ctx = this.canvas.getContext("2d");
+        ctx.save()
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         ctx.font = "15px monospace";
         ctx.fillStyle = "#00FF00";
 
         ctx.scale(this.scale, this.scale);
         ctx.translate(this.translateX * 15, this.translateY * 15);
+
+        ctx.beginPath();
         for (var line in this.characterArray) {
             for (var character in this.characterArray[line]) {
                 this.drawChar_(ctx, line, character);
             }
         }
+        ctx.restore();
     }
 
     drawChar_(ctx, line, character) {
         let invertColors = false;
         if (this.playerPos[0] == character && this.playerPos[1] == line) {
+            ctx.strokeStyle = "#FF0000";
             invertColors = true;
         }
+
         for (coord in this.playerPositions) {
             if (this.playerPos[0] == this.playerPositions[coord][0] &&
                 this.playerPos[1] == this.playerPositions[coord][1]) {
-                    invertColors = true;
+                invertColors = true;
+                ctx.strokeStyle = "#00FF00";
             }
         }
 
         if (invertColors) {
-            ctx.strokeStyle = "#FF0000";
             // draw a rectangle to highlight cursor
             let x = character * 15 - 2;
             let y = line * 15 + 2;
+            ctx.beginPath();
             ctx.rect(x, y, 13, 15);
             ctx.stroke();
         }
@@ -160,7 +168,7 @@ export default class VimCanvas {
             this.characterArray[line][character][0],
             character * 15,
             (line * 15) + 15
-        );
+        );     
     }
 
     resize_() {
@@ -176,6 +184,14 @@ export default class VimCanvas {
                     event.preventDefault();
                     this.commandInput.focus();
                 }
+            case 72: // h
+                this.playerPos[0] -= 1;
+            case 74: // j
+                this.playerPos[1] -= 1;
+            case 75: // k
+                this.playerPos[1] += 1;
+            case 76: // l
+                this.playerPos[0] += 1;
         }
         this.draw();
     }
