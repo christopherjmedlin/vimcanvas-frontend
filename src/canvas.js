@@ -16,7 +16,7 @@ class CanvasCommandInput extends CommandRunner {
         this.input.className = "commandInput";
         this.input.disabled = true;
         this.container.appendChild(this.input);
-        $(this.input).keydown($.proxy(this.keyPress_, this));
+        $(this.input).keydown($.proxy(this.keyUp_, this));
     }
 
     focus() {
@@ -39,7 +39,7 @@ class CanvasCommandInput extends CommandRunner {
         this.input.value = text;
     }
 
-    keyPress_(event) {
+    keyUp_(event) {
         switch (event.which) {
             case 8:
                 if (this.input.value == ":") {
@@ -102,7 +102,7 @@ export default class VimCanvas {
         this.commandInput.init();
 
         this.canvas.focus();
-        $(this.canvas).keyup($.proxy(this.keyPress_, this));
+        $(this.canvas).keyup($.proxy(this.keyUp_, this));
 
         // horizontal scrollbar appears if i resize once so i do it twice.
         // ¯\_(ツ)_/¯
@@ -184,7 +184,7 @@ export default class VimCanvas {
         this.canvas.height = $(this.container).height() - 25;
     }
 
-    keyPress_(event) {
+    keyUp_(event) {
         switch (event.which) {
             case 186: // :
                 if (event.shiftKey) {
@@ -195,15 +195,15 @@ export default class VimCanvas {
         }
         
         if (this.mode == "normal") {
-            this.keyPressNormalMode_(event);
+            this.keyUpNormalMode_(event);
         }
         else if (this.mode == "insert") {
-            this.keyPressInsertMode_(event);
+            this.keyUpInsertMode_(event);
         }
         this.draw();
     }
 
-    keyPressNormalMode_(event) {
+    keyUpNormalMode_(event) {
         switch (event.which) {
             case 72: // h
                 this.playerPos[0] -= 1;
@@ -239,7 +239,7 @@ export default class VimCanvas {
         }
     }
 
-    keyPressInsertMode_(event) {
+    keyUpInsertMode_(event) {
         switch (event.which) {
             case 27: // escape
                 if (this.mode == "insert") {
