@@ -102,7 +102,9 @@ export default class VimCanvas {
         this.commandInput.init();
 
         this.canvas.focus();
+
         $(this.canvas).keyup($.proxy(this.keyUp_, this));
+        $(this.canvas).keypress($.proxy(this.keyPress_, this));
 
         // horizontal scrollbar appears if i resize once so i do it twice.
         // ¯\_(ツ)_/¯
@@ -184,22 +186,23 @@ export default class VimCanvas {
         this.canvas.height = $(this.container).height() - 25;
     }
 
-    keyUp_(event) {
-        switch (event.which) {
-            case 186: // :
-                if (event.shiftKey) {
-                    event.preventDefault();
-                    this.commandInput.focus();
-                }
-                break;
+    keyPress_(event) {
+        if (event.which == 58 && // : 
+            event.shiftKey && 
+            this.mode == "normal") {
+            event.preventDefault();
+            this.commandInput.focus();
         }
-        
+    }
+
+    keyUp_(event) {   
         if (this.mode == "normal") {
             this.keyUpNormalMode_(event);
         }
         else if (this.mode == "insert") {
             this.keyUpInsertMode_(event);
         }
+
         this.draw();
     }
 
