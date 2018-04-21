@@ -239,6 +239,12 @@ export default class VimCanvas {
             case 40: // down arrow
                 this.translateY -= 4;
                 break;
+            case 189: // dash
+                this.scale /= 2;
+                break;
+            case 187: // plus
+                this.scale *= 2;
+                break;
         }
     }
 
