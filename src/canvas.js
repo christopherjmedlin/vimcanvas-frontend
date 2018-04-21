@@ -31,6 +31,7 @@ class CanvasCommandInput extends CommandRunner {
         super.runCommand(this.input.value.slice(1));
         this.input.disabled = true;
         this.canvas.focus();
+        this.canvas.draw();
     }
 
     output(text) {
