@@ -1,8 +1,6 @@
 import $ from 'jquery';
 import CommandRunner from './runner';
 
-let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket"
-
 class CanvasCommandInput extends CommandRunner {
     constructor(canvas, containerID, terminal, commands) {
         super(commands);
