@@ -64,8 +64,8 @@ export default class VimCanvas {
         this.terminal = terminal;
         this.commands = commands;
 
-        this.playerPos = [Math.floor(Math.random() * 501),
-                          Math.floor(Math.random() * 501)];
+        this.playerPos = [Math.floor(Math.random() * 101),
+                          Math.floor(Math.random() * 101)];
         this.playerPositions = {};
         this.mode = "normal";
         this.translateX = -this.playerPos[0] + 5;
@@ -73,9 +73,9 @@ export default class VimCanvas {
         this.scale = 1;
         
         this.characterArray = [];
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 100; i++) {
             this.characterArray[i] = []
-            for (let j = 0; j < 500; j++) {
+            for (let j = 0; j < 100; j++) {
                 this.characterArray[i][j] = '##00FF00';
             }
         }
