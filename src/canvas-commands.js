@@ -9,11 +9,18 @@ function move(runner, args) {
     runner.canvas.playerPos[1] = Number(args[1])
 }
 
+function location(runner, args) {
+    let output = "x: " + runner.canvas.playerPos[0] +
+             ", y: " + runner.canvas.playerPos[1];
+    runner.output(output);
+}
+
 let canvasCommands = {
     "q": quit,
     "wq": quit,
     "x": quit,
-    "move": move
+    "move": move,
+    "location": location
 };
 
 export default canvasCommands;
