@@ -67,6 +67,7 @@ export default class VimCanvas {
         this.playerPos = [Math.floor(Math.random() * 501),
                           Math.floor(Math.random() * 501)];
         this.playerPositions = {};
+        this.mode = "normal";
         this.translateX = -this.playerPos[0] + 5;
         this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
@@ -107,10 +108,6 @@ export default class VimCanvas {
         this.draw();
     }
 
-    initWebsocket() {
-        this.socket = new WebSocket(WEBSOCKET_URL + "/" + this.canvasObject["_id"]);
-    }
-
     tearDown() {
         this.container.removeChild(this.elements['wrapperDiv']);
         this.commandInput.tearDown();
@@ -141,8 +138,15 @@ export default class VimCanvas {
 
     drawChar_(ctx, line, character) {
         let invertColors = false;
-        if (this.playerPos[0] == character && this.playerPos[1] == line) {
+
+        if (this.mode == "insert") {
+            ctx.strokeStyle = "#0000FF";
+        }
+        else {
             ctx.strokeStyle = "#FF0000";
+        }
+
+        if (this.playerPos[0] == character && this.playerPos[1] == line) {
             invertColors = true;
         }
 
@@ -150,7 +154,6 @@ export default class VimCanvas {
             if (this.playerPos[0] == this.playerPositions[coord][0] &&
                 this.playerPos[1] == this.playerPositions[coord][1]) {
                 invertColors = true;
-                ctx.strokeStyle = "#00FF00";
             }
         }
 
@@ -185,6 +188,19 @@ export default class VimCanvas {
                     this.commandInput.focus();
                 }
                 break;
+        }
+        
+        if (this.mode == "normal") {
+            this.keyPressNormalMode_(event);
+        }
+        else if (this.mode == "insert") {
+            this.keyPressInsertMode_(event);
+        }
+        this.draw();
+    }
+
+    keyPressNormalMode_(event) {
+        switch (event.which) {
             case 72: // h
                 this.playerPos[0] -= 1;
                 break;
@@ -197,16 +213,35 @@ export default class VimCanvas {
             case 76: // l
                 this.playerPos[0] += 1;
                 break;
+            case 73: // i
+            case 65: // a
+                if (this.mode == "normal") {
+                    this.mode = "insert";
+                    console.log(this.mode);
+                }
+                break;
+            case 37: // left arrow
+                this.translateX += 4;
+                break;
+            case 38: // up arrow
+                this.translateY += 4;
+                break;
+            case 39: // right arrow
+                this.translateX -= 4;
+                break;
+            case 40: // down arrow
+                this.translateY -= 4;
+                break;
         }
-        console.log(this.playerPos);
-        this.draw();
     }
 
-    onWebsocketMessage_(event) {
-        canvasEvent = JSON.parse(event.data).event;
-
-        switch (canvasEvent.type) {
-            
+    keyPressInsertMode_(event) {
+        switch (event.which) {
+            case 27: // escape
+                if (this.mode == "insert") {
+                    this.mode = "normal";
+                }
+                break;
         }
     }
 }
