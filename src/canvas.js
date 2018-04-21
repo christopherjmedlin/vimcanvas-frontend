@@ -94,6 +94,10 @@ export default class VimCanvas {
         this.canvas.tabIndex = 1;
         wrapperDiv.appendChild(this.canvas);
 
+        this.secretInsertInput = document.createElement('input');
+        this.secretInsertInput.hidden = true;
+        wrapperDiv.appendChild(this.secretInsertInput);
+
         this.commandInput = new CanvasCommandInput(this, "mainDiv", this.terminal, this.commands);
         this.commandInput.init();
 
