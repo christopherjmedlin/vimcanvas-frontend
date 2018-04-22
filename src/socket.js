@@ -8,8 +8,8 @@ export default class WebsocketInterface {
         this.socket.onmessage = this.onmessage_.bind(this);
     }
 
-    move(x, y) {
-        this.socket.send("move " + x + " " + y)
+    send(message) {
+        this.socket.send(message);
     }
 
     onmessage_(e) {

@@ -148,6 +148,10 @@ export default class VimCanvasDisplay {
                 this.scale *= 2;
                 break;
         }
+
+        if (event.which >= 72 && event.which <= 76) {
+            this.socket.send("move " + this.playerPos[0] + " " + this.playerPos[1])
+        }
     }
 
     keyUpInsertMode_(event) {
