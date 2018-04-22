@@ -44,23 +44,20 @@ class CanvasCommandInput extends CommandRunner {
     }
 }
 
-export default class VimCanvas {
+export class VimCanvasDisplay {
 
-    constructor(canvasObject, containerID, terminal, commands={}) {
-        this.canvasObject = canvasObject;
-        this.container = document.getElementById(containerID);
-        this.elements = {};
-        this.terminal = terminal;
-        this.commands = commands;
+    constructor(canvas, commandInput) {
+        this.canvas = canvas;
+        this.commandInput = commandInput;
 
         this.playerPos = [Math.floor(Math.random() * 101),
-                          Math.floor(Math.random() * 101)];
+            Math.floor(Math.random() * 101)];
         this.playerPositions = {};
         this.mode = "normal";
         this.translateX = -this.playerPos[0] + 5;
         this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
-        
+
         this.characterArray = [];
         for (let i = 0; i < 100; i++) {
             this.characterArray[i] = []
@@ -68,47 +65,10 @@ export default class VimCanvas {
                 this.characterArray[i][j] = '##00FF00';
             }
         }
-        
-        $(window).resize($.proxy(this.resize_, this));
+
         $(window).resize($.proxy(this.draw, this));
-    }
-    
-    init() {     
-        let wrapperDiv = document.createElement('div');
-        wrapperDiv.className = "vimCanvas";
-        this.container.appendChild(wrapperDiv);
-        this.elements['wrapperDiv'] = wrapperDiv;
-
-        this.canvas = document.createElement('canvas');
-        this.canvas.tabIndex = 1;
-        wrapperDiv.appendChild(this.canvas);
-
-        this.secretInsertInput = document.createElement('input');
-        this.secretInsertInput.hidden = true;
-        wrapperDiv.appendChild(this.secretInsertInput);
-
-        let input = document.createElement('input');
-        input.className = "commandInput";
-        input.disabled = true;
-        wrapperDiv.appendChild(input);
-
-        this.commandInput = new CanvasCommandInput(this, input, this.commands);
-
-        this.canvas.focus();
-
         $(this.canvas).keyup($.proxy(this.keyUp_, this));
         $(this.canvas).keypress($.proxy(this.keyPress_, this));
-
-        // horizontal scrollbar appears if i resize once so i do it twice.
-        // ¯\_(ツ)_/¯
-        this.resize_();
-        this.resize_();
-
-        this.draw();
-    }
-
-    tearDown() {
-        this.container.removeChild(this.elements['wrapperDiv']);
     }
 
     focus() {
@@ -132,50 +92,6 @@ export default class VimCanvas {
             }
         }
         ctx.restore();
-    }
-
-    drawChar_(ctx, line, character) {
-        let invertColors = false;
-
-        if (this.mode == "insert") {
-            ctx.strokeStyle = "#0000FF";
-        }
-        else {
-            ctx.strokeStyle = "#FF0000";
-        }
-
-        if (this.playerPos[0] == character && this.playerPos[1] == line) {
-            invertColors = true;
-        }
-
-        for (coord in this.playerPositions) {
-            if (this.playerPos[0] == this.playerPositions[coord][0] &&
-                this.playerPos[1] == this.playerPositions[coord][1]) {
-                invertColors = true;
-            }
-        }
-
-        if (invertColors) {
-            // draw a rectangle to highlight cursor
-            let x = character * 15 - 2;
-            let y = line * 15 + 2;
-            ctx.beginPath();
-            ctx.rect(x, y, 13, 15);
-            ctx.stroke();
-        }
-
-        ctx.fillStyle = this.characterArray[line][character].slice(1);
-        ctx.fillText(
-            this.characterArray[line][character][0],
-            character * 15,
-            (line * 15) + 15
-        );     
-    }
-
-    resize_() {
-        this.canvas.width = $(this.container).width();
-        // subtract 25 to make up for the input
-        this.canvas.height = $(this.container).height() - 25;
     }
 
     keyPress_(event) {
@@ -249,4 +165,106 @@ export default class VimCanvas {
                 break;
         }
     }
+
+    drawChar_(ctx, line, character) {
+        let invertColors = false;
+
+        if (this.mode == "insert") {
+            ctx.strokeStyle = "#0000FF";
+        }
+        else {
+            ctx.strokeStyle = "#FF0000";
+        }
+
+        if (this.playerPos[0] == character && this.playerPos[1] == line) {
+            invertColors = true;
+        }
+
+        for (coord in this.playerPositions) {
+            if (this.playerPos[0] == this.playerPositions[coord][0] &&
+                this.playerPos[1] == this.playerPositions[coord][1]) {
+                invertColors = true;
+            }
+        }
+
+        if (invertColors) {
+            // draw a rectangle to highlight cursor
+            let x = character * 15 - 2;
+            let y = line * 15 + 2;
+            ctx.beginPath();
+            ctx.rect(x, y, 13, 15);
+            ctx.stroke();
+        }
+
+        ctx.fillStyle = this.characterArray[line][character].slice(1);
+        ctx.fillText(
+            this.characterArray[line][character][0],
+            character * 15,
+            (line * 15) + 15
+        );     
+    }
+}
+
+export default class VimCanvas {
+
+    constructor(canvasObject, containerID, terminal, commands={}) {
+        this.canvasObject = canvasObject;
+        this.container = document.getElementById(containerID);
+        this.elements = {};
+        this.terminal = terminal;
+        this.commands = commands;
+        
+        $(window).resize($.proxy(this.resize_, this));
+    }
+    
+    init() {     
+        let wrapperDiv = document.createElement('div');
+        wrapperDiv.className = "vimCanvas";
+        this.container.appendChild(wrapperDiv);
+        this.elements['wrapperDiv'] = wrapperDiv;
+
+        let canvasElement = document.createElement('canvas');
+        canvasElement.tabIndex = 1;
+        wrapperDiv.appendChild(canvasElement);
+        this.elements["canvas"] = canvasElement;
+
+        this.secretInsertInput = document.createElement('input');
+        this.secretInsertInput.hidden = true;
+        wrapperDiv.appendChild(this.secretInsertInput);
+
+        let input = document.createElement('input');
+        input.className = "commandInput";
+        input.disabled = true;
+        wrapperDiv.appendChild(input);
+
+        this.commandInput = new CanvasCommandInput(this, input, this.commands);
+        this.canvas = new VimCanvasDisplay(canvasElement, this.commandInput);
+
+        this.canvas.focus();
+
+        // horizontal scrollbar appears if i resize once so i do it twice.
+        // ¯\_(ツ)_/¯
+        this.resize_();
+        this.resize_();
+
+        this.draw();
+    }
+
+    tearDown() {
+        this.container.removeChild(this.elements['wrapperDiv']);
+    }
+
+    focus() {
+        this.canvas.focus();
+    }
+
+    draw() {
+        this.canvas.draw();
+    }
+
+    resize_() {
+        this.elements["canvas"].width = $(this.container).width();
+        // subtract 25 to make up for the input
+        this.elements["canvas"].height = $(this.container).height() - 25;
+    }  
 }
