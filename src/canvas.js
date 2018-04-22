@@ -2,18 +2,12 @@ import $ from 'jquery';
 import CommandRunner from './runner';
 
 class CanvasCommandInput extends CommandRunner {
-    constructor(canvas, containerID, terminal, commands) {
+    constructor(canvas, input, terminal, commands) {
         super(commands);
         this.canvas = canvas;
         this.terminal = terminal;
-        this.container = document.getElementById(containerID);
-    }
+        this.input = input;
 
-    init() {
-        this.input = document.createElement('input');
-        this.input.className = "commandInput";
-        this.input.disabled = true;
-        this.container.appendChild(this.input);
         $(this.input).keydown($.proxy(this.keyUp_, this));
     }
 
@@ -21,10 +15,6 @@ class CanvasCommandInput extends CommandRunner {
         this.input.value = ":";
         this.input.disabled = false;
         this.input.focus();
-    }
-
-    tearDown() {
-        this.container.removeChild(this.input);
     }
 
     runCommand() {
@@ -97,8 +87,12 @@ export default class VimCanvas {
         this.secretInsertInput.hidden = true;
         wrapperDiv.appendChild(this.secretInsertInput);
 
-        this.commandInput = new CanvasCommandInput(this, "mainDiv", this.terminal, this.commands);
-        this.commandInput.init();
+        let input = document.createElement('input');
+        input.className = "commandInput";
+        input.disabled = true;
+        wrapperDiv.appendChild(input);
+
+        this.commandInput = new CanvasCommandInput(this, input, this.terminal, this.commands);
 
         this.canvas.focus();
 
@@ -115,7 +109,6 @@ export default class VimCanvas {
 
     tearDown() {
         this.container.removeChild(this.elements['wrapperDiv']);
-        this.commandInput.tearDown();
     }
 
     focus() {
