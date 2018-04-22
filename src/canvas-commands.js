@@ -5,13 +5,13 @@ function quit(runner, args) {
 }
 
 function move(runner, args) {
-    runner.canvas.playerPos[0] = Number(args[0])
-    runner.canvas.playerPos[1] = Number(args[1])
+    runner.canvas.canvas.playerPos[0] = Number(args[0])
+    runner.canvas.canvas.playerPos[1] = Number(args[1])
 }
 
 function location(runner, args) {
-    let output = "x: " + runner.canvas.playerPos[0] +
-             ", y: " + runner.canvas.playerPos[1];
+    let output = "x: " + runner.canvas.canvas.playerPos[0] +
+             ", y: " + runner.canvas.canvas.playerPos[1];
     runner.output(output);
 }
 
