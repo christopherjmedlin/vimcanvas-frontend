@@ -17,6 +17,9 @@ export default class VimCanvasDisplay {
         this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
 
+        this.highlightHeight = 1;
+        this.highlightWidth = 1;
+
         this.socket = new WebsocketInterface(this);
 
         let alteredChars = this.canvasObject["alteredChars"];
@@ -88,10 +91,23 @@ export default class VimCanvasDisplay {
         if (this.mode == "insert") {
             ctx.strokeStyle = "#0000FF";
         }
-        else {
+        else if (this.mode == "normal") {
             ctx.strokeStyle = "#FF0000";
-        } 
-        this.drawPlayer_(ctx, this.playerPos);
+        }
+        else {
+            ctx.strokeStyle = "#551a8b";
+        }
+
+        if (this.mode != "visual") {
+            this.drawPlayer_(ctx, this.playerPos);
+        }
+        else {
+            let x = this.playerPos[0] * 15 - 2;
+            let y = this.playerPos[1] * 17 + 2;
+            ctx.beginPath();
+            ctx.rect(x, y, this.highlightWidth * 15, this.highlightHeight * 17);
+            ctx.stroke();
+        }
     }
 
     drawPlayer_(ctx, player) {
@@ -115,18 +131,36 @@ export default class VimCanvasDisplay {
     keyPress_(event) {
         if (event.which == 58 && // : 
             event.shiftKey && 
-            this.mode == "normal") {
+            (this.mode == "normal" || this.mode == "visual")) {
             event.preventDefault();
             this.commandInput.focus();
         }
     }
 
-    keyUp_(event) {   
+    keyUp_(event) {
+        switch (event.which) {
+            case 37: // left arrow
+                this.translateX += 4;
+                break;
+            case 38: // up arrow
+                this.translateY += 4;
+                break;
+            case 39: // right arrow
+                this.translateX -= 4;
+                break;
+            case 40: // down arrow
+                this.translateY -= 4;
+                break;
+        }
+
         if (this.mode == "normal") {
             this.keyUpNormalMode_(event);
         }
         else if (this.mode == "insert") {
             this.keyUpInsertMode_(event);
+        }
+        else if (this.mode == "visual") {
+            this.keyUpVisualMode_(event);
         }
 
         this.draw();
@@ -153,17 +187,8 @@ export default class VimCanvasDisplay {
                     this.mode = "insert";
                 }
                 break;
-            case 37: // left arrow
-                this.translateX += 4;
-                break;
-            case 38: // up arrow
-                this.translateY += 4;
-                break;
-            case 39: // right arrow
-                this.translateX -= 4;
-                break;
-            case 40: // down arrow
-                this.translateY -= 4;
+            case 86: // v
+                this.mode = "visual";
                 break;
             case 189: // dash
                 this.scale /= 2;
@@ -193,7 +218,29 @@ export default class VimCanvasDisplay {
                             this.insertInput.value[0])        
             this.insertInput.value = "";
         }
+    }
 
-        this.draw();
+    keyUpVisualMode_(event) {
+        switch (event.which) {
+            case 72: // h
+                this.playerPos[0] -= 1;
+                this.highlightWidth += 1;
+                break;
+            case 74: // j
+                this.highlightHeight += 1;
+                break;
+            case 75: // k
+                this.playerPos[1] -= 1;
+                this.highlightHeight += 1;
+                break;
+            case 76: // l
+                this.highlightWidth += 1;
+                break;
+            case 27:
+                this.mode = "normal";
+                this.highlightHeight = 1;
+                this.highlightWidth = 1;
+                break;
+        }
     }
 }
