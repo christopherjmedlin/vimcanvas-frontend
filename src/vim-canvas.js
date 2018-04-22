@@ -1,7 +1,7 @@
 import CommandRunner from './runner';
 import VimCanvasDisplay from './canvas';
 
-class CanvasCommandInput extends CommandRunner {
+class CommandInput extends CommandRunner {
     constructor(canvas, input, commands) {
         super(commands);
         console.log(commands);
@@ -76,8 +76,8 @@ export default class VimCanvas {
         input.disabled = true;
         wrapperDiv.appendChild(input);
 
-        this.commandInput = new CanvasCommandInput(this, input, this.commands);
-        this.canvas = new VimCanvasDisplay(canvasElement, this.commandInput);
+        this.commandInput = new CommandInput(this, input, this.commands);
+        this.canvas = new VimCanvasDisplay(canvasElement, this.commandInput, this.canvasObject);
 
         this.canvas.focus();
 
