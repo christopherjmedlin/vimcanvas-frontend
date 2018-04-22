@@ -13,6 +13,11 @@ function move(runner, args) {
     )
 }
 
+function color(runner, args) {
+    runner.display.socket.send("color " + runner.display.playerPos[0] + " " + 
+                               runner.display.playerPos[1] + " " + args[0])
+}
+
 function location(runner, args) {
     let output = "x: " + runner.display.playerPos[0] +
              ", y: " + runner.display.playerPos[1];
@@ -24,6 +29,7 @@ let canvasCommands = {
     "wq": quit,
     "x": quit,
     "move": move,
+    "color": color,
     "location": location
 };
 
