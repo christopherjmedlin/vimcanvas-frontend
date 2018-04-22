@@ -1,4 +1,4 @@
-import VimCanvas from './canvas.js';
+import VimCanvas from './vim-canvas.js';
 import canvasCommands from './canvas-commands.js';
 import $ from 'jquery';
 
