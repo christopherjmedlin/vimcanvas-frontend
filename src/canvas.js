@@ -1,10 +1,12 @@
 import $ from 'jquery';
+import WebsocketInterface from './socket';
 
 export default class VimCanvasDisplay {
 
-    constructor(canvas, commandInput) {
+    constructor(canvas, commandInput, canvasObject) {
         this.canvas = canvas;
         this.commandInput = commandInput;
+        this.canvasObject = canvasObject;
 
         this.playerPos = [Math.floor(Math.random() * 101),
             Math.floor(Math.random() * 101)];
@@ -13,6 +15,8 @@ export default class VimCanvasDisplay {
         this.translateX = -this.playerPos[0] + 5;
         this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
+
+        this.socket = new WebsocketInterface(this);
 
         this.characterArray = [];
         for (let i = 0; i < 100; i++) {
@@ -47,6 +51,7 @@ export default class VimCanvasDisplay {
                 this.drawChar_(ctx, line, character);
             }
         }
+
         ctx.restore();
     }
 
@@ -136,7 +141,7 @@ export default class VimCanvasDisplay {
             invertColors = true;
         }
 
-        for (coord in this.playerPositions) {
+        for (var coord in this.playerPositions) {
             if (this.playerPos[0] == this.playerPositions[coord][0] &&
                 this.playerPos[1] == this.playerPositions[coord][1]) {
                 invertColors = true;
