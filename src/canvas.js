@@ -2,10 +2,10 @@ import $ from 'jquery';
 import CommandRunner from './runner';
 
 class CanvasCommandInput extends CommandRunner {
-    constructor(canvas, input, terminal, commands) {
+    constructor(canvas, input, commands) {
         super(commands);
+        console.log(commands);
         this.canvas = canvas;
-        this.terminal = terminal;
         this.input = input;
 
         $(this.input).keydown($.proxy(this.keyUp_, this));
@@ -92,7 +92,7 @@ export default class VimCanvas {
         input.disabled = true;
         wrapperDiv.appendChild(input);
 
-        this.commandInput = new CanvasCommandInput(this, input, this.terminal, this.commands);
+        this.commandInput = new CanvasCommandInput(this, input, this.commands);
 
         this.canvas.focus();
 

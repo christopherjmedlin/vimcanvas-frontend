@@ -1,7 +1,7 @@
 function quit(runner, args) {
     runner.canvas.tearDown();
-    runner.terminal.show();
-    runner.terminal.focus();
+    runner.canvas.terminal.show();
+    runner.canvas.terminal.focus();
 }
 
 function move(runner, args) {
