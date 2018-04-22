@@ -26,6 +26,9 @@ export default class WebsocketInterface {
             case "char":
                this.canvas.changeChar(data["char"], data["x"], data["y"]);
                break;
+            case "color":
+               this.canvas.changeColor(data["color"], data["x"], data["y"]);
+               break;
         }
 
         this.canvas.draw();
