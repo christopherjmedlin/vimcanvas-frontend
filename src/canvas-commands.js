@@ -7,6 +7,10 @@ function quit(runner, args) {
 function move(runner, args) {
     runner.canvas.canvas.playerPos[0] = Number(args[0])
     runner.canvas.canvas.playerPos[1] = Number(args[1])
+
+    runner.canvas.canvas.socket.send(
+        "move " + runner.canvas.canvas.playerPos[0] + " " + runner.canvas.canvas.playerPos[1]
+    )
 }
 
 function location(runner, args) {
