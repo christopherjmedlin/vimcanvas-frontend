@@ -51,8 +51,42 @@ export default class VimCanvasDisplay {
                 this.drawChar_(ctx, line, character);
             }
         }
-
+        
+        this.drawPlayers_(ctx);
         ctx.restore();
+    }
+
+    drawPlayers_(ctx) {
+        ctx.strokeStyle = "#00FF00";
+        for (var coord in this.playerPositions) {         
+            this.drawPlayer_(ctx, this.playerPositions[coord]);
+        }
+
+        if (this.mode == "insert") {
+            ctx.strokeStyle = "#0000FF";
+        }
+        else {
+            ctx.strokeStyle = "#FF0000";
+        } 
+        this.drawPlayer_(ctx, this.playerPos);
+    }
+
+    drawPlayer_(ctx, player) {
+        // draw a rectangle to highlight cursor
+        let x = player[0] * 15 - 2;
+        let y = player[1] * 15 + 2;
+        ctx.beginPath();
+        ctx.rect(x, y, 13, 15);
+        ctx.stroke();
+    }
+
+    drawChar_(ctx, line, character) {
+        ctx.fillStyle = this.characterArray[line][character].slice(1);
+        ctx.fillText(
+            this.characterArray[line][character][0],
+            character * 15,
+            (line * 15) + 15
+        );     
     }
 
     keyPress_(event) {
@@ -93,7 +127,6 @@ export default class VimCanvasDisplay {
             case 65: // a
                 if (this.mode == "normal") {
                     this.mode = "insert";
-                    console.log(this.mode);
                 }
                 break;
             case 37: // left arrow
@@ -125,43 +158,5 @@ export default class VimCanvasDisplay {
                 }
                 break;
         }
-    }
-
-    drawChar_(ctx, line, character) {
-        let invertColors = false;
-
-        if (this.mode == "insert") {
-            ctx.strokeStyle = "#0000FF";
-        }
-        else {
-            ctx.strokeStyle = "#FF0000";
-        }
-
-        if (this.playerPos[0] == character && this.playerPos[1] == line) {
-            invertColors = true;
-        }
-
-        for (var coord in this.playerPositions) {
-            if (this.playerPos[0] == this.playerPositions[coord][0] &&
-                this.playerPos[1] == this.playerPositions[coord][1]) {
-                invertColors = true;
-            }
-        }
-
-        if (invertColors) {
-            // draw a rectangle to highlight cursor
-            let x = character * 15 - 2;
-            let y = line * 15 + 2;
-            ctx.beginPath();
-            ctx.rect(x, y, 13, 15);
-            ctx.stroke();
-        }
-
-        ctx.fillStyle = this.characterArray[line][character].slice(1);
-        ctx.fillText(
-            this.characterArray[line][character][0],
-            character * 15,
-            (line * 15) + 15
-        );     
     }
 }
