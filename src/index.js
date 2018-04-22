@@ -15,14 +15,14 @@ function logo() {
 
 function main() {
     let mainDiv = document.getElementById("mainDiv");
-    mainDiv.style.height = window.innerHeight - 190 + "px";
+    mainDiv.style.height = window.innerHeight - 210 + "px";
     $(logo()).insertBefore(mainDiv);
     
     let term = new FakeTerminal("mainDiv", '$>', commands);
     term.init();
 
     $(window).resize(() => {
-        document.getElementById("mainDiv").style.height = window.innerHeight - 190 + "px";
+        document.getElementById("mainDiv").style.height = window.innerHeight - 210 + "px";
     });
 }
 
