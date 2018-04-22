@@ -67,8 +67,8 @@ export default class VimCanvas {
         this.elements["canvas"] = canvasElement;
 
         this.secretInsertInput = document.createElement('input');
-        this.secretInsertInput.hidden = true;
-        wrapperDiv.appendChild(this.secretInsertInput);
+        this.secretInsertInput.style.opacity = 0;
+        this.container.parentElement.appendChild(this.secretInsertInput);
 
         let input = document.createElement('input');
         input.className = "commandInput";
@@ -76,7 +76,7 @@ export default class VimCanvas {
         wrapperDiv.appendChild(input);
 
         this.commandInput = new CommandInput(this, input, this.commands);
-        this.canvas = new VimCanvasDisplay(canvasElement, this.commandInput, this.canvasObject);
+        this.canvas = new VimCanvasDisplay(canvasElement, this.commandInput, this.canvasObject, this.secretInsertInput);
         this.commandInput.display = this.canvas;
 
         this.canvas.focus();

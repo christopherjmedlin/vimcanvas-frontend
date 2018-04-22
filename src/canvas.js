@@ -3,10 +3,11 @@ import WebsocketInterface from './socket';
 
 export default class VimCanvasDisplay {
 
-    constructor(canvas, commandInput, canvasObject) {
+    constructor(canvas, commandInput, canvasObject, insertInput) {
         this.canvas = canvas;
         this.commandInput = commandInput;
         this.canvasObject = canvasObject;
+        this.insertInput = insertInput
 
         this.playerPos = [Math.floor(Math.random() * 101),
             Math.floor(Math.random() * 101)];
@@ -42,6 +43,7 @@ export default class VimCanvasDisplay {
         $(window).resize($.proxy(this.draw, this));
         $(this.canvas).keyup($.proxy(this.keyUp_, this));
         $(this.canvas).keypress($.proxy(this.keyPress_, this));
+        $(this.insertInput).keyup($.proxy(this.keyUpInsertMode_, this));
     }
 
     focus() {
@@ -64,7 +66,7 @@ export default class VimCanvasDisplay {
         ctx.fillStyle = "#00FF00";
 
         ctx.scale(this.scale, this.scale);
-        ctx.translate(this.translateX * 15, this.translateY * 15);
+        ctx.translate(this.translateX * 15, this.translateY * 17);
 
         ctx.beginPath();
         for (var line in this.characterArray) {
@@ -95,7 +97,7 @@ export default class VimCanvasDisplay {
     drawPlayer_(ctx, player) {
         // draw a rectangle to highlight cursor
         let x = player[0] * 15 - 2;
-        let y = player[1] * 15 + 2;
+        let y = player[1] * 17 + 2;
         ctx.beginPath();
         ctx.rect(x, y, 13, 15);
         ctx.stroke();
@@ -106,7 +108,7 @@ export default class VimCanvasDisplay {
         ctx.fillText(
             this.characterArray[line][character][0],
             character * 15,
-            (line * 15) + 15
+            (line * 17) + 15
         );     
     }
 
@@ -146,6 +148,7 @@ export default class VimCanvasDisplay {
                 break;
             case 73: // i
             case 65: // a
+                this.insertInput.focus();
                 if (this.mode == "normal") {
                     this.mode = "insert";
                 }
@@ -178,10 +181,19 @@ export default class VimCanvasDisplay {
     keyUpInsertMode_(event) {
         switch (event.which) {
             case 27: // escape
+                this.canvas.focus();
                 if (this.mode == "insert") {
                     this.mode = "normal";
                 }
                 break;
         }
+
+        if (this.insertInput.value != "") {
+            this.socket.send("char " + this.playerPos[0] + " " + this.playerPos[1] + " " +
+                            this.insertInput.value[0])        
+            this.insertInput.value = "";
+        }
+
+        this.draw();
     }
 }
