@@ -5,17 +5,17 @@ function quit(runner, args) {
 }
 
 function move(runner, args) {
-    runner.canvas.canvas.playerPos[0] = Number(args[0])
-    runner.canvas.canvas.playerPos[1] = Number(args[1])
+    runner.display.playerPos[0] = Number(args[0])
+    runner.display.playerPos[1] = Number(args[1])
 
-    runner.canvas.canvas.socket.send(
-        "move " + runner.canvas.canvas.playerPos[0] + " " + runner.canvas.canvas.playerPos[1]
+    runner.display.socket.send(
+        "move " + runner.display.playerPos[0] + " " + runner.display.playerPos[1]
     )
 }
 
 function location(runner, args) {
-    let output = "x: " + runner.canvas.canvas.playerPos[0] +
-             ", y: " + runner.canvas.canvas.playerPos[1];
+    let output = "x: " + runner.display.playerPos[0] +
+             ", y: " + runner.display.playerPos[1];
     runner.output(output);
 }
 

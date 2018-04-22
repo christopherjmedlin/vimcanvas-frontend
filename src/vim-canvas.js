@@ -4,7 +4,6 @@ import VimCanvasDisplay from './canvas';
 class CommandInput extends CommandRunner {
     constructor(canvas, input, commands) {
         super(commands);
-        console.log(commands);
         this.canvas = canvas;
         this.input = input;
 
@@ -78,6 +77,7 @@ export default class VimCanvas {
 
         this.commandInput = new CommandInput(this, input, this.commands);
         this.canvas = new VimCanvasDisplay(canvasElement, this.commandInput, this.canvasObject);
+        this.commandInput.display = this.canvas;
 
         this.canvas.focus();
 
