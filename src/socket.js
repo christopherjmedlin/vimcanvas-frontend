@@ -22,6 +22,10 @@ export default class WebsocketInterface {
                this.canvas.playerPositions[data["id"]] = [
                    data["x"], data["y"]
                ];
+               break;
+            case "char":
+               this.canvas.changeChar(data["char"], data["x"], data["y"]);
+               break;
         }
 
         this.canvas.draw();
