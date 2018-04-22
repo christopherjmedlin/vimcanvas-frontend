@@ -18,11 +18,24 @@ export default class VimCanvasDisplay {
 
         this.socket = new WebsocketInterface(this);
 
+        let alteredChars = this.canvasObject["alteredChars"];
         this.characterArray = [];
         for (let i = 0; i < 100; i++) {
             this.characterArray[i] = []
             for (let j = 0; j < 100; j++) {
-                this.characterArray[i][j] = '##00FF00';
+                let alteredChar = false;
+                for (var char in alteredChars) {
+                    let x = alteredChars[char]["coords"][0];
+                    let y = alteredChars[char]["coords"][1];
+                    
+                    if (x == j && y == i) {
+                        this.characterArray[i][j] = alteredChars[char]["char"] + 
+                                                    alteredChars[char]["color"];
+                        alteredChar = true;
+                    }
+                }
+                if (!alteredChar)    
+                    this.characterArray[i][j] = '##00FF00';
             }
         }
 
