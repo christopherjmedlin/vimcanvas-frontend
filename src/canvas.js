@@ -36,7 +36,7 @@ export default class VimCanvasDisplay {
                     }
                 }
                 if (!alteredChar)    
-                    this.characterArray[i][j] = '##00FF00';
+                    this.characterArray[i][j] = '_#00FF00';
             }
         }
 
