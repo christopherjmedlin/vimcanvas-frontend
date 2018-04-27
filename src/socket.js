@@ -1,4 +1,4 @@
-let WEBSOCKET_URL = "ws://api.vimcanvas.christophermedlin.me/v1/socket?id="
+let WEBSOCKET_URL = "wss://api.vimcanvas.christophermedlin.me/v1/socket?id="
 
 export default class WebsocketInterface {
     constructor(canvas) {
