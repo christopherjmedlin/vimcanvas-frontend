@@ -17,8 +17,7 @@ export default class VimCanvasDisplay {
         this.translateY = -this.playerPos[1] + 5;
         this.scale = 1;
 
-        this.highlightHeight = 1;
-        this.highlightWidth = 1;
+        this.highlightPos = this.playerPos.slice();
 
         this.socket = new WebsocketInterface(this);
 
@@ -102,10 +101,17 @@ export default class VimCanvasDisplay {
             this.drawPlayer_(ctx, this.playerPos);
         }
         else {
-            let x = this.playerPos[0] * 15 - 2;
-            let y = this.playerPos[1] * 17 + 2;
+            // top left corner is based on which of the two points is furthest up and
+            // furthest to the left
+            let x = Math.min(this.playerPos[0], this.highlightPos[0]) * 15 - 3;
+            let y = Math.min(this.playerPos[1], this.highlightPos[1]) * 17 + 2;
+
+            // width and height are the abs. value of the difference between the points
+            let width = (Math.abs(this.playerPos[0] - this.highlightPos[0]) + 1) * 15;
+            let height = (Math.abs(this.playerPos[1] - this.highlightPos[1]) + 1) * 17;
+
             ctx.beginPath();
-            ctx.rect(x, y, this.highlightWidth * 15, this.highlightHeight * 17);
+            ctx.rect(x, y, width, height);
             ctx.stroke();
         }
     }
@@ -223,23 +229,20 @@ export default class VimCanvasDisplay {
     keyUpVisualMode_(event) {
         switch (event.which) {
             case 72: // h
-                this.playerPos[0] -= 1;
-                this.highlightWidth += 1;
+                this.highlightPos[0] -= 1;
                 break;
             case 74: // j
-                this.highlightHeight += 1;
+                this.highlightPos[1] += 1;
                 break;
             case 75: // k
-                this.playerPos[1] -= 1;
-                this.highlightHeight += 1;
+                this.highlightPos[1] -= 1;
                 break;
             case 76: // l
-                this.highlightWidth += 1;
+                this.highlightPos[0] += 1;
                 break;
             case 27:
                 this.mode = "normal";
-                this.highlightHeight = 1;
-                this.highlightWidth = 1;
+                this.highlightPos = this.playerPos;
                 break;
         }
     }
