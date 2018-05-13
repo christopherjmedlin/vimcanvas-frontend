@@ -194,6 +194,7 @@ export default class VimCanvasDisplay {
                 }
                 break;
             case 86: // v
+                this.highlightPos = this.playerPos.slice();
                 this.mode = "visual";
                 break;
             case 189: // dash
@@ -242,7 +243,6 @@ export default class VimCanvasDisplay {
                 break;
             case 27:
                 this.mode = "normal";
-                this.highlightPos = this.playerPos;
                 break;
         }
     }
