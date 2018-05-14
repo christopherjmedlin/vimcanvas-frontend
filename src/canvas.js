@@ -222,7 +222,9 @@ export default class VimCanvasDisplay {
 
         if (this.insertInput.value != "") {
             this.socket.send("char " + this.playerPos[0] + " " + this.playerPos[1] + " " +
-                            this.insertInput.value[0])        
+                            this.insertInput.value[0])
+            this.mode = "normal";
+            this.canvas.focus();
             this.insertInput.value = "";
         }
     }
