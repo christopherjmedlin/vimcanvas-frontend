@@ -24,10 +24,10 @@ export default class WebsocketInterface {
                ];
                break;
             case "char":
-               this.canvas.changeChar(data["char"], data["x"], data["y"]);
+               this.canvas.changeChar(data["char"], data["x"], data["y"], data["width"], data["height"]);
                break;
             case "color":
-               this.canvas.changeColor(data["color"], data["x"], data["y"]);
+               this.canvas.changeColor(data["color"], data["x"], data["y"], data["width"], data["height"]);
                break;
         }
 

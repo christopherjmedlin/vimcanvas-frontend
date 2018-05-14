@@ -52,12 +52,20 @@ export default class VimCanvasDisplay {
         this.canvas.focus();
     }
 
-    changeChar(char, x, y) {
-        this.characterArray[y][x] = char + this.characterArray[y][x].slice(1);
+    changeChar(char, x, y, width=1, height=1) {
+        for (let i = y; i < y + height; i++) {
+            for (let j = x; j < x + width; j++) {
+                this.characterArray[i][j] = char + this.characterArray[i][j].slice(1);
+            }
+        } 
     }
 
-    changeColor(color, x, y) {
-        this.characterArray[y][x] = this.characterArray[y][x][0] + color;
+    changeColor(color, x, y, width=1, height=1) {
+        for (let i = y; i < y + height; i++) {
+            for (let j = x; j < x + width; j++) {
+                this.characterArray[i][j] = this.characterArray[i][j][0] + color;
+            }
+        } 
     }
 
     draw() {
