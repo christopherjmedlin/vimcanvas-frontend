@@ -217,6 +217,7 @@ export default class VimCanvasDisplay {
                 if (this.mode == "insert") {
                     this.mode = "normal";
                 }
+                this.draw();
                 break;
         }
 
