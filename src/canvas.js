@@ -57,7 +57,7 @@ export default class VimCanvasDisplay {
             for (let j = x; j < x + width; j++) {
                 this.characterArray[i][j] = char + this.characterArray[i][j].slice(1);
             }
-        } 
+        }
     }
 
     changeColor(color, x, y, width=1, height=1) {
@@ -202,7 +202,6 @@ export default class VimCanvasDisplay {
                 }
                 break;
             case 86: // v
-                this.highlightPos = this.playerPos.slice();
                 this.mode = "visual";
                 break;
             case 189: // dash
@@ -215,6 +214,7 @@ export default class VimCanvasDisplay {
 
         if (event.which >= 72 && event.which <= 76) {
             this.socket.send("move " + this.playerPos[0] + " " + this.playerPos[1])
+            this.highlightPos = this.playerPos.slice();
         }
     }
 
