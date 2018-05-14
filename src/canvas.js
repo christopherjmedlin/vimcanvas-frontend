@@ -75,6 +75,8 @@ export default class VimCanvasDisplay {
         ctx.font = "15px monospace";
         ctx.fillStyle = "#00FF00";
 
+        ctx.translate(this.canvas.width/2, this.canvas.height/2)
+
         ctx.scale(this.scale, this.scale);
         ctx.translate(this.translateX * 15, this.translateY * 17);
 
