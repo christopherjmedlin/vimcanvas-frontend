@@ -1,5 +1,4 @@
 import './style/style.css';
-import Logo from './img/logo.svg';
 import $ from 'jquery';
 import FakeTerminal from './terminal.js';
 import commands from './commands.js';
