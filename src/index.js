@@ -4,26 +4,18 @@ import $ from 'jquery';
 import FakeTerminal from './terminal.js';
 import commands from './commands.js';
 
-function logo() {
-    var logo = new Image();
-
-    logo.id = 'logo';
-    logo.src = Logo;
-
-    return logo;
-}
-
 function main() {
     let mainDiv = document.getElementById("mainDiv");
     mainDiv.style.height = window.innerHeight - 210 + "px";
-    $(logo()).insertBefore(mainDiv);
     
-    let term = new FakeTerminal("mainDiv", '$>', commands);
-    term.init();
+    if (location.pathname == '/') {
+        let term = new FakeTerminal("mainDiv", '$>', commands);
+        term.init();
 
-    $(window).resize(() => {
-        document.getElementById("mainDiv").style.height = window.innerHeight - 210 + "px";
-    });
+        $(window).resize(() => {
+            document.getElementById("mainDiv").style.height = window.innerHeight - 210 + "px";
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

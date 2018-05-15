@@ -70,11 +70,22 @@ export function vim(terminal, args) {
         terminal.output("No name specified.");
 }
 
+export function help(terminal, args) {
+    var win = window.open("about.html", "_blank");
+    if (win) {
+        win.focus();
+    }
+    else {
+        window.location.href = "about.html";
+    }
+}
+
 var commands = {
     "echo": echo,
     "ls": ls,
     "touch": touch,
-    "vim": vim
+    "vim": vim,
+    "help": help
 }
 
 export default commands;
