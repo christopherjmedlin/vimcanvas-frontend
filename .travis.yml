@@ -1,10 +1,18 @@
 language: node_js
 
 node_js:
-  - "node"
+- node
 
 install:
-  - npm install
+- npm install
 
 script:
-  - npm run-script build
+- npm run-script build
+
+deploy:
+  provider: s3
+  access_key_id: "AKIAJN7DT2DYQ357PKDA"
+  secret_access_key:
+    secure: I+OP0KviS77kYNGLtrrKXDs8nTatr2pxD1ztKXvuJ5ZsSzAIRq07RDJkBvdzz8KKsgophsfqkjIKj3ofeBVOFqPV3PrkG5l5YubzrxRIBZOw1CjfjBg0AkWwOmjNmZOOC+wcBOIal1HOSj1qoFWL8jy8eMOYNWrnw+fpTa2gIA4J0+hkPo/asVyDVM03TRs7BODfnPCpiWv1DjN6tqIMNTJCLLVnphPG3/D0lP5BZD2DOUxeQwZ7Sadle85ykMpiloSBhkX5I4bsAU/2Hz41VdFY7+0ivCjTposAL1a0efXOSpOX0MMgbDnxPg1ENda7wmHvIlofrHuWdoLgh2lhzaZLoUCeYOsHRAwIV2q8yDUsQ7WmYN0Ta5GyjENf+gdf2vtKsY/GCWm9kyeZWo4nDu3DQjESZ4w4rmrlrfizCg2RHyn3PS/tfEdVNNjiZNi56Rsqx5mBcanDsbzEwb1lbYDp0KnOybStn0Bf+vpRr7yR5GYmrlz5l7jkmVyduY+WwXUNN6V4aGFlgkY5WejUwMoAbhMALCZUFUHTyzDCLHzXNvXls8oWpWmlHb+8eO234pzNJjgWjr5sCWqrnq445am2BQo1atzER04Je0KbPqNLjKidolJw50kGRJNVFLtGAUvW4NiuhB+51pIqLtFYAVsE3orPCE3PYT99Lx3YvZA=
+  bucket: "vimcanvas"
+  skip_cleanup: true
