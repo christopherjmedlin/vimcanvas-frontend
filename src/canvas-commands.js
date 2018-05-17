@@ -1,3 +1,5 @@
+import { help } from "./commands";
+
 function sendCharChangeMessage(command, val, playerPos, highlightPos, socket) {
     let width = Math.abs(playerPos[0] - highlightPos[0]) + 1;
     let height = Math.abs(playerPos[1] - highlightPos[1]) + 1;
@@ -63,7 +65,8 @@ let canvasCommands = {
     "move": move,
     "color": color,
     "char": char,
-    "location": location
+    "location": location,
+    "help": help
 };
 
 export default canvasCommands;
