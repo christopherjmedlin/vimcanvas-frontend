@@ -46,6 +46,7 @@ export default class VimCanvasDisplay {
         $(this.canvas).keyup($.proxy(this.keyUp_, this));
         $(this.canvas).keypress($.proxy(this.keyPress_, this));
         $(this.insertInput).keyup($.proxy(this.keyUpInsertMode_, this));
+        $(this.canvas).keydown($.proxy(this.keyDown_, this));
     }
 
     focus() {
@@ -175,8 +176,16 @@ export default class VimCanvasDisplay {
         else if (this.mode == "insert") {
             this.keyUpInsertMode_(event);
         }
+
+        this.draw();
+    }
+
+    keyDown_(event) {
+        if (this.mode == "normal") {
+            this.keyDownNormalMode_(event);
+        }
         else if (this.mode == "visual") {
-            this.keyUpVisualMode_(event);
+            this.keyDownVisualMode_(event);
         }
 
         this.draw();
@@ -184,18 +193,6 @@ export default class VimCanvasDisplay {
 
     keyUpNormalMode_(event) {
         switch (event.which) {
-            case 72: // h
-                this.playerPos[0] -= 1;
-                break;
-            case 74: // j
-                this.playerPos[1] += 1;
-                break;
-            case 75: // k
-                this.playerPos[1] -= 1;
-                break;
-            case 76: // l
-                this.playerPos[0] += 1;
-                break;
             case 73: // i
             case 65: // a
                 this.insertInput.focus();
@@ -240,7 +237,24 @@ export default class VimCanvasDisplay {
         }
     }
 
-    keyUpVisualMode_(event) {
+    keyDownNormalMode_(event) {
+        switch (event.which) {
+            case 72: // h
+                this.playerPos[0] -= 1;
+                break;
+            case 74: // j
+                this.playerPos[1] += 1;
+                break;
+            case 75: // k
+                this.playerPos[1] -= 1;
+                break;
+            case 76: // l
+                this.playerPos[0] += 1;
+                break;
+        }
+    }
+
+    keyDownVisualMode_(event) {
         switch (event.which) {
             case 72: // h
                 this.highlightPos[0] -= 1;
