@@ -255,22 +255,47 @@ export default class VimCanvasDisplay {
     }
 
     keyDownVisualMode_(event) {
-        switch (event.which) {
-            case 72: // h
-                this.highlightPos[0] -= 1;
-                break;
-            case 74: // j
-                this.highlightPos[1] += 1;
-                break;
-            case 75: // k
-                this.highlightPos[1] -= 1;
-                break;
-            case 76: // l
-                this.highlightPos[0] += 1;
-                break;
-            case 27:
-                this.mode = "normal";
-                break;
+        if (event.shiftKey) {
+            switch (event.which) {
+                case 72: // h
+                    this.playerPos[0] -= 1;
+                    this.highlightPos[0] -= 1;
+                    break;
+                case 74: // j
+                    this.playerPos[1] += 1;
+                    this.highlightPos[1] += 1;
+                    break;
+                case 75: // k
+                    this.playerPos[1] -= 1;
+                    this.highlightPos[1] -= 1;
+                    break;
+                case 76: // l
+                    this.playerPos[0] += 1;
+                    this.highlightPos[0] += 1;
+                    break;
+                case 27:
+                    this.mode = "normal";
+                    break;
+            }
+        }
+        else {
+            switch (event.which) {
+                case 72: // h
+                    this.highlightPos[0] -= 1;
+                    break;
+                case 74: // j
+                    this.highlightPos[1] += 1;
+                    break;
+                case 75: // k
+                    this.highlightPos[1] -= 1;
+                    break;
+                case 76: // l
+                    this.highlightPos[0] += 1;
+                    break;
+                case 27:
+                    this.mode = "normal";
+                    break;
+            }
         }
     }
 }
