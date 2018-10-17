@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./node_modules/.bin/webpack-dev-server --mode development",
+    "build": "./build.sh"
   },
   "keywords": [],
   "author": "",
@@ -23,9 +24,5 @@
   },
   "dependencies": {
     "file-loader": "^1.1.11"
-  },
-  "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server --mode development",
-    "build": "./build.sh"
   }
 }
